@@ -18,9 +18,9 @@ public class BookDao {
     private static final String ALL_CHECKOUT_BOOKS = "select distinct book.isbn, book.title, descr from book, book_checkout where book.isbn = book_checkout.isbn";
     private static final String ALL_CURRENT_CHECKOUT_BOOKS =
             "select distinct book.isbn, book.title, book_checkout.checkedout, book_checkout.returned " +
-            "from book, book_checkout, patron " +
-            "where book_checkout.patron_id = patron.patron_id " +
-                    "and book.isbn = book_checkout.isbn;";
+                    "from book, book_checkout, patron " +
+                    "where book_checkout.patron_id = patron.patron_id " +
+                    "and book.isbn = book_checkout.isbn and patron.patron_id = ?";
 
 
     public List<Book> getAllBooks() {
@@ -62,11 +62,12 @@ public class BookDao {
         return checkoutBooks;
     }
 
-    public List<Book> getPatronCheckoutBooks() {
+    public List<Book> getPatronCheckoutBooks(int patronId) {
         List<Book> currentCheckoutBooks = new ArrayList<>();
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(ALL_CURRENT_CHECKOUT_BOOKS);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(ALL_CURRENT_CHECKOUT_BOOKS)) {
+            preparedStatement.setInt(1, patronId);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 BookCheckout bookCheckout = new BookCheckout(resultSet.getDate("checkedout"), resultSet.getDate("returned"));
