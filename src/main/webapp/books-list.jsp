@@ -1,10 +1,12 @@
 <%@ include file= "header.jsp" %>
 <div class="container">
 	
-	<c:if test="${patron.username != null} }"> 
+	<c:if test="${(patron.first_name).length() > 0}"> 
+		<br>
 		<div>
-			<h1>HELLO</h1>
+			<h1>Hello ${patron.first_name}!</h1>
 		</div>
+		<hr>
 	</c:if>
 	
 	<h1>Book List</h1>
@@ -12,7 +14,6 @@
 	<br>
 	<table class="table table-hover">
 		<thead>
-			<h1>${patron.first_name}</h1>
 			<tr>
 				<th>ISBN</th>
 				<th>Title</th>
