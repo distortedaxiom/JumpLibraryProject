@@ -57,8 +57,10 @@ public class LibraryServlet extends HttpServlet {
     }
 
     private void listAllCheckoutBooks(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Book> checkoutBooks = bookDao.getPatronCheckoutBooks(1);
-        request.setAttribute("allCheckoutBooks", checkoutBooks);
+        List<Book> previousCheckoutBooks = bookDao.getPatronPreviousCheckoutBooks(1);
+        List<Book> currentCheckoutBooks = bookDao.getPatronCurrentCheckoutBooks(1);
+        request.setAttribute("previousCheckoutBooks", previousCheckoutBooks);
+        request.setAttribute("currentCheckoutBooks", currentCheckoutBooks);
         RequestDispatcher dispatcher = request.getRequestDispatcher("checkout-books-list.jsp");
         dispatcher.forward(request, response);
     }
