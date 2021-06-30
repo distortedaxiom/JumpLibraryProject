@@ -8,12 +8,13 @@ public class Patron {
     private String password;
     private boolean frozen;
 
-    public Patron(int id, String first_name, String last_name, String username, String password) {
+    public Patron(int id, String first_name, String last_name, String username, String password, boolean frozen) {
         this.id = id;
         this.first_name = first_name;
         this.last_name = last_name;
         this.username = username;
         this.password = password;
+        this.frozen = frozen;
     }
 
     public Patron(String first_name, String last_name, String username, String password) {

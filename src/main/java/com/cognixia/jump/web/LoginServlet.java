@@ -7,8 +7,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.cognixia.jump.dao.LoginDao;
+import com.cognixia.jump.model.Patron;
 
 
 /**
@@ -38,15 +40,23 @@ public class LoginServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		Patron p = null;
+		
 		String username = request.getParameter("username").toLowerCase();
 		String password = request.getParameter("password");
 		
 	if (LoginDao.validate(username, password)) {
 		
+		p = LoginDao.getPatronInfo(username, password);
+		
+        HttpSession session=request.getSession();  
+        session.setAttribute("patron", p); 
+        
 		response.sendRedirect(request.getContextPath()+"/books");
 		
 	} else {
-		System.out.println("ERROR");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+		dispatcher.forward(request, response);
 	}
 
 	}
