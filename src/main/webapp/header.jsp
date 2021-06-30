@@ -39,6 +39,9 @@
                   <a class="nav-link" href="<%= request.getContextPath() %>/books">Show Books</a>
                 </li>
                 <li class="nav-item">
+                  <a class="nav-link" href="<%= request.getContextPath() %>/checkout">Show Checkout Books</a>
+                </li>
+                <li class="nav-item">
                   <a class="nav-link" href="#">Login</a>
                 </li>
               </ul>

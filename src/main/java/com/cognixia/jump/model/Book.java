@@ -10,12 +10,50 @@ public class Book {
     private boolean rented;
     private Date addedToLibrary;
 
+    public Date getCheckoutDate() {
+        return checkoutDate;
+    }
+
+    public void setCheckoutDate(Date checkoutDate) {
+        this.checkoutDate = checkoutDate;
+    }
+
+    public Date getReturnDate() {
+        return returnDate;
+    }
+
+    public void setReturnDate(Date returnDate) {
+        this.returnDate = returnDate;
+    }
+
+    private Date checkoutDate;
+    private Date returnDate;
+
     public Book(int isbn, String title, String description, boolean rented, Date addedToLibrary) {
         this.isbn = isbn;
         this.title = title;
         this.description = description;
         this.rented = rented;
         this.addedToLibrary = addedToLibrary;
+    }
+
+    public Book(int isbn, String title, String description) {
+        this.isbn = isbn;
+        this.title = title;
+        this.description = description;
+    }
+
+    public Book(int isbn, String title) {
+        this.isbn = isbn;
+        this.title = title;
+    }
+
+    public Book(int isbn, String title, Date checkOutDate, Date returnDate) {
+        this.isbn = isbn;
+        this.title = title;
+        BookCheckout bookCheckout = new BookCheckout(checkOutDate, returnDate);
+        this.checkoutDate = bookCheckout.getCheckOutDate();
+        this.returnDate = bookCheckout.getReturnDate();
     }
 
     public int getIsbn() {
