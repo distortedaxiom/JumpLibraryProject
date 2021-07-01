@@ -2,7 +2,9 @@ package com.cognixia.jump.web;
 
 import com.cognixia.jump.connection.ConnectionManager;
 import com.cognixia.jump.dao.BookDao;
+import com.cognixia.jump.dao.LoginDao;
 import com.cognixia.jump.dao.PatronDao;
+import com.cognixia.jump.dao.BookCheckoutDao;
 import com.cognixia.jump.model.Book;
 import com.cognixia.jump.model.BookCheckout;
 import com.cognixia.jump.model.Patron;
@@ -25,12 +27,13 @@ public class LibraryServlet extends HttpServlet {
 
     private BookDao bookDao;
     private PatronDao patronDao;
+    private BookCheckoutDao bookCheckoutDao;
     private BookCheckout bookCheckout;
-
     @Override
     public void init() {
         bookDao = new BookDao();
         patronDao = new PatronDao();
+        bookCheckoutDao = new BookCheckoutDao();
         bookCheckout = new BookCheckout();
     }
 
@@ -47,6 +50,9 @@ public class LibraryServlet extends HttpServlet {
                 break;
             case "/signup":
             	goToSignupPage(request, response);
+            	break;
+            case "/checkoutbook":
+            	checkoutBook(request, response);
             	break;
             default:
                 response.sendRedirect(request.getContextPath() + "/");
@@ -79,6 +85,20 @@ public class LibraryServlet extends HttpServlet {
 	private void goToSignupPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("signup.jsp");
 		dispatcher.forward(request, response);
+	}
+	
+	private void checkoutBook(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+    	HttpSession session = request.getSession(false);
+    	
+    	Patron patron = (Patron) session.getAttribute("patron");
+		
+		String isbn  = request.getParameter("isbn");
+		
+		bookCheckoutDao.checkoutBook(patron.getId(), isbn);
+		
+		response.sendRedirect(request.getContextPath() + "/books");
+		
 	}
 
     @Override

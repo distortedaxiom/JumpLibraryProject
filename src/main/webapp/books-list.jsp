@@ -53,7 +53,7 @@
 					</td>
 					<td>
 						<c:if test="${(book.rented) == false}"> 
-						<a href="edit?id=<c:out value='${ book.isbn }' />">
+						<a href="checkoutbook?isbn=<c:out value='${ book.isbn }' />">
 							<button class="btn btn-primary">Checkout</button>
 						</a>&nbsp;&nbsp;&nbsp;&nbsp;
 						</c:if>
