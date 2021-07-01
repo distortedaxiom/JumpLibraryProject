@@ -67,6 +67,11 @@
                         <td>
                             <c:out value="${ checkoutBook.checkoutDate }" />
                         </td>
+                        <td>
+						<a href="delete?id=<c:out value='${ book.isbn }' />">
+							<button class="btn btn-danger">Return</button>
+						</a>&nbsp;&nbsp;&nbsp;&nbsp;
+					</td>
     				</tr>
     			</c:forEach>
     		</tbody>

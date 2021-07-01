@@ -24,7 +24,7 @@
                 <button type="submit" class="btn btn-primary btn-block">Create your account</button>
             </div>
         </form>
-        <p class="text-center"><a href="#">Already have an account? Login!</a></p>
+        <p class="text-center"><a href="<%= request.getContextPath() %>/">Already have an account? Login!</a></p>
     </div>
 </div>
 
