@@ -16,10 +16,10 @@ public class BookCheckoutDao {
 
     private static final String ALL_BOOK_CHECKOUTS = "SELECT * FROM book_checkout";
     private static final String INSERT_CHECKOUT_BOOK = "insert into book_checkout(checkout_id, patron_id, isbn, checkedout, due_date, returned) values (null,?, ?, current_date(), date_add(current_date(), interval 14 day), null)";
-    private static final String RETURN_CHECKEDOUT_BOOK_DATE = "update book_checkout set returned = current_date() where returned is null and patron_id = ?";
-    private static final String RETURN_CHECKEDOUT_BOOK_RENTED = "update book inner join book_checkout on book.isbn = book_checkout.isbn set book.rented = 0 where book.rented = 1 and book_checkout.patron_id = ?";
-    private static final String CHECKOUT_BOOK_RENTED  = "update book inner join book_checkout on book.isbn = book_checkout.isbn set book.rented = 1 where book.rented = 0 and book_checkout.patron_id = ?";
-
+    private static final String RETURN_CHECKEDOUT_BOOK_DATE = "update book_checkout set returned = current_date() where returned is null and book_checkout.isbn = ? and patron_id = ?";
+    private static final String RETURN_CHECKEDOUT_BOOK_RENTED = "update book inner join book_checkout on book.isbn = book_checkout.isbn set book.rented = 0 where book.isbn = ? and book_checkout.patron_id = ?";
+    private static final String CHECKOUT_BOOK_RENTED  = "update book inner join book_checkout on book.isbn = book_checkout.isbn set book.rented = 1 where book.isbn = ? and book_checkout.patron_id = ?";
+    
     public List<BookCheckout> getAllCheckoutBooks() {
 
         List<BookCheckout> checkoutBooks = new ArrayList<>();
@@ -38,26 +38,22 @@ public class BookCheckoutDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        
         return checkoutBooks;
     }
 
     public boolean checkoutBook(int patronId, String isbn){
     	
-        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CHECKOUT_BOOK);
-        PreparedStatement preparedStatement1 = connection.prepareStatement(CHECKOUT_BOOK_RENTED)){
-            preparedStatement.setInt(1, patronId);
-            preparedStatement.setString(2, isbn);
-            
+        try (PreparedStatement preparedStatement1 = connection.prepareStatement(INSERT_CHECKOUT_BOOK);
+        PreparedStatement preparedStatement2 = connection.prepareStatement(CHECKOUT_BOOK_RENTED)){
             preparedStatement1.setInt(1, patronId);
+            preparedStatement1.setString(2, isbn);
             
-            int statement = 0;
-            int statement1 = 0;
-            
-            statement = preparedStatement.executeUpdate();
-            statement1 = preparedStatement1.executeUpdate();  
+            preparedStatement2.setString(1, isbn);
+            preparedStatement2.setInt(2, patronId);
+ 
 
-            if ((statement > 0) && (statement1 > 0)) {
+            if ((preparedStatement1.executeUpdate() > 0) && (preparedStatement2.executeUpdate() > 0)) {
                 return true;
             }
 
@@ -68,13 +64,18 @@ public class BookCheckoutDao {
         return false;
     }
 
-    public boolean returnBook(int patronId) {
+    public boolean returnBook(int patronId, String isbn) {
+    	
         try (PreparedStatement preparedStatement1 = connection.prepareStatement(RETURN_CHECKEDOUT_BOOK_DATE);
         PreparedStatement preparedStatement2 = connection.prepareStatement(RETURN_CHECKEDOUT_BOOK_RENTED)) {
-            preparedStatement1.setInt(1, patronId);
-            preparedStatement2.setInt(1, patronId);
-
-            if (preparedStatement1.executeUpdate() > 0 && preparedStatement2.executeUpdate() > 0) {
+            preparedStatement1.setString(1, isbn);
+            preparedStatement1.setInt(2, patronId);
+            
+            preparedStatement2.setString(1, isbn);
+            preparedStatement2.setInt(2, patronId);
+        
+         
+            if ((preparedStatement1.executeUpdate() > 0) && (preparedStatement2.executeUpdate() > 0)) {
                 return true;
             }
 

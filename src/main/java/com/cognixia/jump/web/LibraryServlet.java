@@ -54,6 +54,9 @@ public class LibraryServlet extends HttpServlet {
             case "/checkoutbook":
             	checkoutBook(request, response);
             	break;
+            case "/returnbook":
+            	returnBook(request, response);
+            	break;
             default:
                 response.sendRedirect(request.getContextPath() + "/");
         }
@@ -100,6 +103,21 @@ public class LibraryServlet extends HttpServlet {
 		response.sendRedirect(request.getContextPath() + "/books");
 		
 	}
+	
+	private void returnBook(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+    	HttpSession session = request.getSession(false);
+    	
+    	Patron patron = (Patron) session.getAttribute("patron");
+    	
+    	String isbn  = request.getParameter("isbn");
+		
+		bookCheckoutDao.returnBook(patron.getId(), isbn);
+		
+		response.sendRedirect(request.getContextPath() + "/books");
+		
+	}
+
 
     @Override
     public void destroy() {
