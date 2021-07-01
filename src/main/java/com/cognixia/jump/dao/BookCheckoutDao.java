@@ -15,6 +15,10 @@ public class BookCheckoutDao {
     private static final Connection connection = ConnectionManager.getConnection();
 
     private static final String ALL_BOOK_CHECKOUTS = "SELECT * FROM book_checkout";
+    private static final String INSERT_CHECKOUT_BOOK = "insert into book_checkout(checkout_id, patron_id, isbn, checkedout, due_date, returned) values (null,?, ?, current_date(), date_add(current_date(), interval 14 day), null)";
+    private static final String RETURN_CHECKEDOUT_BOOK_DATE = "update book_checkout set returned = current_date() where returned is null and patron_id = ?";
+    private static final String RETURN_CHECKEDOUT_BOOK_RENTED = "update book inner join book_checkout on book.isbn = book_checkout.isbn set book.rented = 0 where book.rented = 1 and book_checkout.patron_id = ?";
+    private static final String CHECKOUT_BOOK_RENTED  = "update book inner join book_checkout on book.isbn = book_checkout.isbn set book.rented = 1 where book.rented = 0 and book_checkout.patron_id = ?";
 
     public List<BookCheckout> getAllCheckoutBooks() {
 
@@ -36,5 +40,39 @@ public class BookCheckoutDao {
         }
 
         return checkoutBooks;
+    }
+
+    public boolean checkoutBook(int patronId, String isbn){
+        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CHECKOUT_BOOK);
+        PreparedStatement preparedStatement1 = connection.prepareStatement(CHECKOUT_BOOK_RENTED)){
+            preparedStatement.setInt(1, patronId);
+            preparedStatement.setString(2, isbn);
+
+            if (preparedStatement1.executeUpdate() > 0 && preparedStatement.executeUpdate() > 0) {
+                return true;
+            }
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean returnBook(int patronId) {
+        try (PreparedStatement preparedStatement1 = connection.prepareStatement(RETURN_CHECKEDOUT_BOOK_DATE);
+        PreparedStatement preparedStatement2 = connection.prepareStatement(RETURN_CHECKEDOUT_BOOK_RENTED)) {
+            preparedStatement1.setInt(1, patronId);
+            preparedStatement2.setInt(1, patronId);
+
+            if (preparedStatement1.executeUpdate() > 0 && preparedStatement2.executeUpdate() > 0) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }
