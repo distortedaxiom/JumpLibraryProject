@@ -44,6 +44,9 @@
                 <li class="nav-item">
                   <a class="nav-link" href="#">Login</a>
                 </li>
+                 <li class="nav-item">
+                  <a class="nav-link" href="<%= request.getContextPath() %>/signup">Sign Up</a>
+                </li>
               </ul>
             </div>
           </div>
