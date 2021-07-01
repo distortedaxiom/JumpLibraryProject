@@ -26,17 +26,20 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <div class="container-fluid">
-            <a class="navbar-brand" href="<%= request.getContextPath() %>/">Library</a>
+            <a class="navbar-brand" href="<%= request.getContextPath() %>/books">Library</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav">
                 <li class="nav-item">
-                  <a class="nav-link" href="<%= request.getContextPath() %>/">Home</a>
+                  <a class="nav-link" href="<%= request.getContextPath() %>/books">Home</a>
                 </li>
-                 <li class="nav-item">
-                  <a class="nav-link" href="<%= request.getContextPath() %>/signup">Sign Up</a>
+                <li class="nav-item">
+                  <a class="nav-link" href="<%= request.getContextPath() %>/books">Show Books</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="<%= request.getContextPath() %>/checkout">Show Checkout Books</a>
                 </li>
               </ul>
             </div>
