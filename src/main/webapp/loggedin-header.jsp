@@ -41,6 +41,9 @@
                 <li class="nav-item">
                   <a class="nav-link" href="<%= request.getContextPath() %>/checkout">Show Checkout Books</a>
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="<%= request.getContextPath() %>/account">Account</a>
+                </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
                 <li class="nav-item">

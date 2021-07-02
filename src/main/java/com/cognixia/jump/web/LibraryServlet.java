@@ -57,6 +57,9 @@ public class LibraryServlet extends HttpServlet {
             case "/returnbook":
             	returnBook(request, response);
             	break;
+            case "/account":
+                goToAccountPage(request, response);
+                break;
             default:
                 response.sendRedirect(request.getContextPath() + "/");
         }
@@ -82,6 +85,11 @@ public class LibraryServlet extends HttpServlet {
         request.setAttribute("previousCheckoutBooks", previousCheckoutBooks);
         request.setAttribute("currentCheckoutBooks", currentCheckoutBooks);
         RequestDispatcher dispatcher = request.getRequestDispatcher("checkout-books-list.jsp");
+        dispatcher.forward(request, response);
+    }
+    
+    private void goToAccountPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("account.jsp");
         dispatcher.forward(request, response);
     }
     
