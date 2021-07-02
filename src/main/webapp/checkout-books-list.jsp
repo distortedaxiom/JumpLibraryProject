@@ -53,6 +53,7 @@
     				<th>ISBN</th>
     				<th>Title</th>
     				<th>Checkout Date</th>
+    				<th>Due Date</th>
     			</tr>
     		</thead>
     		<tbody>
@@ -66,6 +67,9 @@
     					</td>
                         <td>
                             <c:out value="${ checkoutBook.checkoutDate }" />
+                        </td>
+                        <td>
+                            <c:out value="${ checkoutBook.dueDate }" />
                         </td>
                         <td>
 						<a href="returnbook?isbn=<c:out value='${ checkoutBook.isbn }' />">

@@ -17,12 +17,12 @@ public class BookDao {
     private static final String ALL_BOOKS = "SELECT * FROM book";
     private static final String ALL_CHECKOUT_BOOKS = "select distinct book.isbn, book.title, descr from book, book_checkout where book.isbn = book_checkout.isbn";
     private static final String ALL_PREVIOUS_CHECKOUT_BOOKS =
-            "select distinct book.isbn, book.title, book_checkout.checkedout, book_checkout.returned " +
+            "select distinct book.isbn, book.title, book_checkout.checkedout, book_checkout.returned, book_checkout.due_date " +
                     "from book, book_checkout, patron " +
                     "where book_checkout.patron_id = patron.patron_id " +
                     "and book.isbn = book_checkout.isbn and patron.patron_id = ? and book_checkout.returned is not NULL";
     private static final String ALL_CURRENT_CHECKOUT_BOOKS =
-            "select distinct book.isbn, book.title, book_checkout.checkedout, book_checkout.returned " +
+            "select distinct book.isbn, book.title, book_checkout.checkedout, book_checkout.returned, book_checkout.due_date " +
                     "from book, book_checkout, patron " +
                     "where book_checkout.patron_id = patron.patron_id " +
                     "and book.isbn = book_checkout.isbn and patron.patron_id = ? and book_checkout.returned is NULL";
@@ -75,11 +75,12 @@ public class BookDao {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                BookCheckout bookCheckout = new BookCheckout(resultSet.getDate("checkedout"), resultSet.getDate("returned"));
+                BookCheckout bookCheckout = new BookCheckout(resultSet.getDate("checkedout"), resultSet.getDate("returned"), resultSet.getDate("due_date"));
                 currentCheckoutBooks.add(new Book(resultSet.getInt("isbn"),
                         resultSet.getString("title"),
                         bookCheckout.getCheckOutDate(),
-                        bookCheckout.getReturnDate()));
+                        bookCheckout.getReturnDate(), 
+                        bookCheckout.getDueDate()));
             }
 
         } catch (SQLException e) {
@@ -97,11 +98,12 @@ public class BookDao {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                BookCheckout bookCheckout = new BookCheckout(resultSet.getDate("checkedout"), resultSet.getDate("returned"));
+                BookCheckout bookCheckout = new BookCheckout(resultSet.getDate("checkedout"), resultSet.getDate("returned"), resultSet.getDate("due_date"));
                 currentCheckoutBooks.add(new Book(resultSet.getInt("isbn"),
                         resultSet.getString("title"),
                         bookCheckout.getCheckOutDate(),
-                        bookCheckout.getReturnDate()));
+                        bookCheckout.getReturnDate(), 
+                        bookCheckout.getDueDate()));
             }
 
         } catch (SQLException e) {

@@ -19,9 +19,10 @@ public class BookCheckout {
         this.returnDate = returnDate;
     }
 
-    public BookCheckout(Date checkOutDate, Date returnDate) {
+    public BookCheckout(Date checkOutDate, Date returnDate, Date dueDate) {
         this.checkOutDate = checkOutDate;
         this.returnDate = returnDate;
+        this.dueDate = dueDate;
     }
 
     public BookCheckout() {
