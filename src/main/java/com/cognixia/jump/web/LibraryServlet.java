@@ -114,7 +114,7 @@ public class LibraryServlet extends HttpServlet {
 		
 		bookCheckoutDao.returnBook(patron.getId(), isbn);
 		
-		response.sendRedirect(request.getContextPath() + "/books");
+		response.sendRedirect(request.getContextPath() + "/checkout");
 		
 	}
 
