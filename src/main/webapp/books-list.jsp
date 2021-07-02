@@ -22,6 +22,9 @@
 	
 	<h1>Book List</h1>
 	<br>
+		<c:if test="${(patron.frozen) == true}"> 
+			<h2 style="color:red">Your account is currently frozen, please contact a librarian to unlock it</h2>
+		</c:if>
 	<br>
 	<table class="table table-hover">
 		<thead>
@@ -46,17 +49,24 @@
 						<c:out value="${ book.description }" />
 					</td>
 					<td>
-						<c:out value="${ book.rented }" />
+						<c:if test="${(book.rented) == true}"> 
+							<c:out value="unavailable" />
+						</c:if>
+						<c:if test="${(book.rented) == false}"> 
+							<c:out value="available" />
+						</c:if>
 					</td>
 					<td>
 						<c:out value="${ book.addedToLibrary }" />
 					</td>
 					<td>
+					<c:if test="${(patron.frozen) == false}"> 
 						<c:if test="${(book.rented) == false}"> 
 						<a href="checkoutbook?isbn=<c:out value='${ book.isbn }' />">
 							<button class="btn btn-primary">Checkout</button>
 						</a>&nbsp;&nbsp;&nbsp;&nbsp;
 						</c:if>
+					</c:if>
 					</td>
 				</tr>
 			</c:forEach>
